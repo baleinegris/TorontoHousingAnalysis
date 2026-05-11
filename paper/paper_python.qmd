@@ -2,7 +2,7 @@
 title: "Analysis of Apartment Building Construction in Toronto"
 author: 
   - Oscar Heath
-thanks: "Code and data are available at: [https://github.com/baleinegris/starter_folder](https://github.com/baleinegris/starter_folder)."
+thanks: "Code and data are available at: [https://github.com/baleinegris/TorontoHousingAnalysis](https://github.com/baleinegris/TorontoHousingAnalysis)."
 date: today
 date-format: long
 abstract: "As the city of Toronto continues to expand, it demands increasing amounts of housing, which are not being met currently, leaving Toronto in a housing crisis. Our analysis of Toronto apartment construction data compares activity across across four distinct periods: pre-war, post-war, end of century, and modern. Our findings show that that while there is a mild increase in construction in the modern period, it is not nearly as high as the post-war boom, and that the construction of new housing units is not keeping up with demand."
