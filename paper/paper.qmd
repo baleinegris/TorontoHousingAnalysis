@@ -94,7 +94,7 @@ plt.show()
 ```
 
 ## A Shift in Building Types
-Plotting the average number of storeys in new buildings, we see that in the modern period there is a trend towards taller buildings with more units ([@fig-avg-storeys, @fig-avg-units]). This indicates a shift from horizontal expansion to vertical expansion, a trend that is echoed in the urban cycle of many cities globally [@Zambon2019]. This shift is likely due to an increasing scarcity of land in the city after the urban sprawl of the post-war boom. Vertical expansion allows more the city to house more people in the same land footprint. When stratifying the data by construction era, we see a clear story of urban sprawl [@fig-eras]. In the pre-war we see a concentration of small apartments in the downtown, followed by an explosion of mid-sized apartments in the post-war period, stretching out into the suburbs. We then see a declining suburban construction in the end of the century, and finally a modern focus on a small number of large high-rise apartments, which are somewhat sprinkled across the city, but mainly focused in the downtown.
+Plotting the average number of storeys in new buildings, we see that in the modern period there is a trend towards taller buildings with more units ([@fig-avg-storeys, @fig-avg-units]). This indicates a shift from horizontal expansion to vertical expansion, a trend that is echoed in the urban cycle of many cities globally [@Zambon2019]. When stratifying the data by construction era, we see a clear story of urban sprawl [@fig-eras]. In the pre-war we see a concentration of small apartments in the downtown, followed by an explosion of mid-sized apartments in the post-war period, stretching out into the suburbs. We then see a declining suburban construction in the end of the century, and finally a modern focus on a small number of large high-rise apartments, which are somewhat sprinkled across the city, but mainly focused in the downtown. The shift towards vertical expansion is likely due to an increasing scarcity of land in the city after the urban sprawl of the post-war boom. Vertical expansion allows more the city to house more people in the same land footprint.
 
 @fig-eras goes a long way in explaining why the city of Toronto has not been able to build at the rate of the post-war boom: horizontal expansion is not as viable as it was in the 50s, as available land becomes increasingly scarce. The city is now forced to build vertically, a more lengthy and expensive process. The city of Toronto is not able to keep up with demand for housing, nor should it be expected to, given the constraints of vertical expansion.
 
@@ -181,20 +181,6 @@ def plot_era(gdf, title, colour, legend=False):
     plt.tight_layout(pad=0.5)
     return fig
 ```
-::: {#fig-eras}
-```{python}
-#| echo: false
-fig, ax = plt.subplots(figsize=(4, 1.2))
-ax.set_axis_off()
-for units_val in [50, 150, 300]:
-    ax.scatter([], [], s=(units_val / df["units"].max()) * 250,
-               c="grey", alpha=0.6, edgecolors="white", linewidths=0.3,
-               label=f"{units_val} units")
-ax.legend(title="Number of units", title_fontsize=9, fontsize=9,
-          loc="center", frameon=False, ncol=3)
-plt.tight_layout()
-plt.show()
-```
 ```{python}
 #| fig-cap: "Residential buildings in Toronto by construction era. Bubble size reflects number of units."
 #| fig-subcap:
@@ -215,10 +201,9 @@ plt.show()
 plot_era(to_web_mercator(endOfCenturyDf), "End of Century", "#fdb863")
 plt.show()
 
-plot_era(to_web_mercator(modernDf), "Modern", "#4dac26")
+plot_era(to_web_mercator(modernDf), "Modern", "#4dac26", legend=True)
 plt.show()
 ```
-:::
 
 # Conclusion
 It would appear that the city of Toronto is nearing the limits of its growth, as seen by the housing crisis and the inability to address it. So, while the mild success of modern policies is promising, it is not likely that this will be sufficient to meet demand. The city, as well as the province and federal government, will need to consider other mechanisms to address the issue, as post-war level construction of housing in Toronto is not viable.
