@@ -28,19 +28,19 @@ load_dotenv()
 ```
 
 # Introduction
-Following World War II, Toronto experienced a period of prosperity and rapid development [@McGillivray2026]. Supported by affordable housing policies, the city saw a huge amount of construction, as demand for new housing exploded. The city grew rapidly, and became the largest city in Canada in 1976 [@McGillivray2026]: this represents the peak of investments in affordable housing [@CCHR]. In the 80s, the city begins to cut back on affordable housing policies. As a result, the rapid construction of housing of the post-war boom has not been matched in the 21st century, and Toronto now faces a significant housing crisis. Toronto consistently has a higher rate of low-income households than the rest of Canada or Ontario [@TorontoHousingDataBook2026]. Through a data-driven analysis of the construction of apartment buildings in Toronto, we find that modern efforts by the city are bearing modest fruit, but not nearly to the extent that they would need to in order to meet demand. In 2022 and 2023, Toronto has the highest gross increase in population of any city in North America [@TMU2024], and the construction is simply not keeping up with demand.
+Following World War II, Toronto experienced a period of prosperity and rapid development [@McGillivray2026]. Supported by affordable housing policies, the city saw a huge amount of construction, as demand for new housing exploded. The city grew rapidly, and became the largest city in Canada in 1976 [@McGillivray2026]: this represents the peak of investments in affordable housing [@CCHR]. However, the rapid construction of housing of the post-war boom has not been matched in the 21st century. As housing construction stagnated and declined in the late 20th century, Toronto became the victim of a significant housing crisis. Today, Toronto consistently has a higher rate of low-income households than the rest of Canada or Ontario [@TorontoHousingDataBook2026].
 
-In this analysis, we present a history of Toronto's housing development, from 1900 to 2020 using data from Open Data Toronto [!Todo cite Open Data Toronto dataset]. We focus only on the construction of apartment buildings, and track their construction over time, as well as their locations and sizes. We find three distinct periods of construction:
-\begin{itemize}
-    \item 1900-1945: Pre-war slow development of small apartments in downtown Toronto
-    \item 1945-1979: Post-war boom in construction, characterized by urban sprawl and the construction of mid-sized apartment buildings
-    \item 1980-1999: Decline in construction, as the city begins to repeal housing policies that encouraged the post-war boom
-    \item 2000-2020: Modern period of construction, characterized by a shift towards high-rise apartment buildings in the downtown area, encouraged by new housing policies
-\end{itemize} 
+In this analysis, we aim to explain the housing crisis, starting with a data-driven history of Toronto's housing development, from 1900 to 2020. We focus on the construction of apartment buildings using data from Open Data Toronto [!Todo cite Open Data Toronto dataset], and track their construction over time, as well as their locations and sizes. 
+
+Through data visualization on the construction of apartment buildings in Toronto, we find that modern efforts by the city are bearing modest fruit, but not nearly to the extent that they would need to in order to meet demand. In 2022 and 2023, Toronto has the highest gross increase in population of any city in North America [@TMU2024], and the construction is simply not keeping up with demand. We argue that the city is not likely to be able to scale housing to the extent that it would need to to meet demand, and that other mechanisms will need to be considered by the city, provincial, and federal government to find a solution to this housing crisis. 
+
+The remainder of the paper is structured as follows. In the \strong{Data} section, we describe the dataset, its collection, and our cleaning process. In the \strong{Results} section, we present our findings on the amount of construction, the types of buildings construted, and their locations. Finally, in the \strong{Conclusion} section, we summarize our findings, discuss their implications for the city of Toronto, and suggest avenues for future research. 
 
 # Data
 
 ## Overview
+For our analysis, we use the Python programming language [!TODO: citation], the matplotlib plotting library [@Hunter2007], and the contextily library for plotting geospatial data [@contextily]. We also use the pandas library for data manipulation [@pandas], and geopandas for geospatial data manipulation [@geopandas].
+
 We use the dataset Apartment Building Evaluation from Open Data Toronto [!Todo cite this], obtained through the CKAN API [!Todo cite CKAN API]. This dataset
  contains information from apartment inspections for buildings registered in RentSafeTO: Apartment Building Standards. RentSafeTO is a bylaw enforcement program founded by the city of Toronto in 2017, and includes all buildings with three or more storeys and 10 or more units. Inspections must occur at least once every two years. The dataset includes information from the inspections themselves, as well as information about the building itself. The inspection method changed in 2023, and so the dataset is downloaded in two parts. For our analysis, we focus only on the information about the building, and not the details of the inspections.
 
@@ -62,6 +62,14 @@ Additionally, we only included buildings built between 1900 and 2020. We justify
 
 # Results
 ## Units Built
+Looking at the construction of apartment units in Toronto over time [@fig-total-units], we distinguish four distinct periods of construction:
+\begin{itemize}
+    \item 1900-1945: Pre-war slow development of small apartments in downtown Toronto
+    \item 1945-1979: Post-war boom in construction, characterized by urban sprawl and the construction of mid-sized apartment buildings
+    \item 1980-1999: Decline in construction, as the city begins to repeal housing policies that encouraged the post-war boom
+    \item 2000-2020: Modern period of construction, characterized by a shift towards high-rise apartment buildings in the downtown area, encouraged by new housing policies
+\end{itemize} 
+
 Studying the distribution of buildings constructed by year ([@fig-total-units]), we see a grim picture being painted: current levels of construction are far lower than they have been historically. Notably, we see a huge boom in construction in the post-war period, peaking in the 70s. This period of immense growth was fueled by favourable tax policies and incentives and rent control (@CCHR, @YorkRental). In the 80s and 90s, the federal government begins to repeal social housing policies, and in 1995, the city stops funding social housing altogether ([@CCHR, @SocialHousing]). This is reflected in the data, as we see a significant drop in construction in the 80s and 90s. Between 1995 and 2005, we see levels of construction that are lower than anything since 1950. However, we see a modest but persistent increase in construction since 2000, seemingly stimulated by new policies and incentives by the city of Toronto. Indeed, in 2010 the city released the Housing Opportunities Toronto plan [@HOT], which aimed to create and repair affordable rental homes, and is extending this program to 2020-2030 under the name HousingTO [@HousingTO].
 
 While the increase in construction since 2000 is promising, it is not nearly enough to match the population growth of the city. The population growth rate of Toronto has consistently been higher than the national average, and it now has over 7 million people [@Toronto7Mil]. Why has the city not been able to keep up with housing demand, as it once did in the 50s? To begin to answer this question, we examined the types and locations of new apartment buildings being constructed today.
@@ -215,4 +223,8 @@ plt.show()
 # Conclusion
 It would appear that the city of Toronto is nearing the limits of its growth, as seen by the housing crisis and the inability to address it. So, while the mild success of modern policies is promising, it is not likely that this will be sufficient to meet demand. The city, as well as the province and federal government, will need to consider other mechanisms to address the issue, as post-war level construction of housing in Toronto is not viable.
 
-As @Cuberes2011 notes, "(...) early on in the process of urbanization, the largest cities grow fastest. As time passes, population growth in the larger cities declines and the fastest growth can be found in smaller cities farther down in the urban hierarchy" [@Cuberes2011].
+As @Cuberes2011 notes, "(...) early on in the process of urbanization, the largest cities grow fastest. As time passes, population growth in the larger cities declines and the fastest growth can be found in smaller cities farther down in the urban hierarchy" [@Cuberes2011]. Future research should compare the growth of smaller satellite cities around Toronto (such as Mississauga, Scarborough, Hamilton...), as well as other cities in Ontario or Canada more broadly to see if they are picking up the slack. Additionally, future research can study the impact that the shift towards vertical expansion has on affordable housing and inequality, as it is likely that the newer high-rise apartments are more expensive than the smaller 20th century apartments.
+
+\newpage 
+ 
+# References
