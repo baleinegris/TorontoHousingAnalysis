@@ -18,7 +18,7 @@ post2023_raw_df = pd.read_csv("../data/01-raw_data/post2023_raw_data.csv")
 raw_df = pd.concat([pre2023_raw_df, post2023_raw_df], ignore_index=True)
 
 # Columns we're interested in: RSN, CONFIRMED_STOREYS, CONFIRMED_UNITS, SCORE, YEAR_BUILT
-columns_of_interest = ["RSN","CONFIRMED_STOREYS", "CONFIRMED_UNITS", "SCORE", "YEAR_BUILT", "YEAR_REGISTERED","LATITUDE", "LONGITUDE"]
+columns_of_interest = ["RSN","CONFIRMED_STOREYS", "CONFIRMED_UNITS", "YEAR_BUILT","LATITUDE", "LONGITUDE"]
 
 # We're opting to drop the missing values, as there are very few of them
 raw_df = raw_df[columns_of_interest]
@@ -35,6 +35,16 @@ raw_df.drop_duplicates(subset=["RSN"], keep="first", inplace=True)
 # in seeing amount of construction in my lifetime
 raw_df = raw_df[(raw_df["YEAR_BUILT"] >= 1900) & (raw_df["YEAR_BUILT"] < 2020)]
 
+
+# rename columns
+raw_df.rename(columns={
+    "RSN": "RSN",
+    "CONFIRMED_STOREYS": "storeys",
+    "CONFIRMED_UNITS": "units",
+    "YEAR_BUILT": "year_built",
+    "LATITUDE": "latitude",
+    "LONGITUDE": "longitude"
+}, inplace=True)
 # Save cleaned data
 raw_df.to_csv("../data/02-analysis_data/analysis_data.csv", index=False)
 
