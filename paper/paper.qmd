@@ -1,11 +1,12 @@
 ---
-title: "Analysis of Apartment Construction in Toronto: Is It Enough?"
+title: "Why Toronto can't seem to build enough housing"
+subtitle: "An analysis of apartment construction in Toronto"
 author: 
   - Oscar Heath
 thanks: "Code and data are available at: [https://github.com/baleinegris/TorontoHousingAnalysis](https://github.com/baleinegris/TorontoHousingAnalysis)."
 date: today
 date-format: long
-abstract: "As the city of Toronto continues to expand, it demands increasing amounts of housing, which are not being met currently, leaving Toronto in a housing crisis. Our analysis of Toronto apartment construction data compares activity across across four distinct periods: pre-war, post-war, end of century, and modern. Our findings show that that while there is a mild increase in construction in the modern period, it is not nearly as high as the post-war boom, and that the construction of new housing units is not keeping up with demand."
+abstract: "As the city of Toronto continues to expand, it demands increasing amounts of housing, which are not being met currently, leaving Toronto in a housing crisis. Our analysis of Toronto apartment construction data compares activity across four distinct periods: pre-war, post-war, end of century, and contemporary. Our findings show a significant decline in construction since the post-war boom, along with a shift towards vertical expansion in the downtown. We argue that the city is not likely to be able to scale housing as quickly as it has in the past, and that other mechanisms will need to be considered to solve the crisis."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -27,26 +28,27 @@ df = pd.read_csv("../data/02-analysis_data/analysis_data.csv")
 load_dotenv()
 ```
 
-# Introduction
+
+# Introduction {#sec-intro}
 Following World War II, Toronto experienced a period of prosperity and rapid development [@McGillivray2026]. Supported by affordable housing policies, the city saw a huge amount of construction, as demand for new housing exploded. The city grew rapidly, and became the largest city in Canada in 1976 [@McGillivray2026]: this represents the peak of investments in affordable housing [@CCHR]. However, the rapid construction of housing of the post-war boom has not been matched in the 21st century. As housing construction stagnated and declined in the late 20th century, Toronto became the victim of a significant housing crisis. Today, Toronto consistently has a higher rate of low-income households than the rest of Canada or Ontario [@TorontoHousingDataBook2026].
 
-In this analysis, we aim to explain the housing crisis, starting with a data-driven history of Toronto's housing development, from 1900 to 2020. We focus on the construction of apartment buildings using data from Open Data Toronto [!Todo cite Open Data Toronto dataset], and track their construction over time, as well as their locations and sizes. 
+In this analysis, we aim to explain the housing crisis, via a history of Toronto's housing development, from 1900 to 2020. We focus on the construction of apartment buildings using data from Open Data Toronto [@apartmentEval], and track their construction over time, as well as their locations and sizes. 
 
-Through data visualization on the construction of apartment buildings in Toronto, we find that modern efforts by the city are bearing modest fruit, but not nearly to the extent that they would need to in order to meet demand. In 2022 and 2023, Toronto has the highest gross increase in population of any city in North America [@TMU2024], and the construction is simply not keeping up with demand. We argue that the city is not likely to be able to scale housing to the extent that it would need to to meet demand, and that other mechanisms will need to be considered by the city, provincial, and federal government to find a solution to this housing crisis. 
+Through data visualization on the construction of apartment buildings in Toronto, we find that modern efforts by the city are bearing modest fruit, but not nearly to the extent that they would need to in order to meet demand. We argue that the city is not likely to be able to scale housing as quickly as it has in the past, and that other mechanisms will need to be considered by the city, provincial, and federal government to find a solution to this housing crisis. 
 
-The remainder of the paper is structured as follows. In the \strong{Data} section, we describe the dataset, its collection, and our cleaning process. In the \strong{Results} section, we present our findings on the amount of construction, the types of buildings construted, and their locations. Finally, in the \strong{Conclusion} section, we summarize our findings, discuss their implications for the city of Toronto, and suggest avenues for future research. 
+The remainder of the paper is structured as follows. In @sec-data, we describe the dataset, its collection, and our cleaning process. In @sec-results, we present our findings on the amount of construction, the types of buildings construted, and their locations. Finally, in @sec-conclusion, we summarize our findings, discuss their implications for the city of Toronto, identify limitations, and suggest avenues for future research. 
 
-# Data
+# Data {#sec-data}
 
 ## Overview
-For our analysis, we use the Python programming language [!TODO: citation], the matplotlib plotting library [@Hunter2007], and the contextily library for plotting geospatial data [@contextily]. We also use the pandas library for data manipulation [@pandas], and geopandas for geospatial data manipulation [@geopandas].
+For our analysis, we use the Python programming language [@Python], the matplotlib plotting library [@Hunter2007], and the contextily library for plotting geospatial data [@contextily]. We also use the pandas library for data manipulation [@pandas], and geopandas for geospatial data manipulation [@geopandas].
 
-We use the dataset Apartment Building Evaluation from Open Data Toronto [!Todo cite this], obtained through the CKAN API [!Todo cite CKAN API]. This dataset
+We use the Apartment Building Evaluation dataset from Open Data Toronto [@apartmentEval], obtained through the CKAN API [@CKANapi]. This dataset
  contains information from apartment inspections for buildings registered in RentSafeTO: Apartment Building Standards. RentSafeTO is a bylaw enforcement program founded by the city of Toronto in 2017, and includes all buildings with three or more storeys and 10 or more units. Inspections must occur at least once every two years. The dataset includes information from the inspections themselves, as well as information about the building itself. The inspection method changed in 2023, and so the dataset is downloaded in two parts. For our analysis, we focus only on the information about the building, and not the details of the inspections.
 
 
 ## Measurement
-Inspections are conducted by the city each year. A list is made of all buildings requiring an evaluation, the building receives a notice, and a bylaw enforcement is assigned to inspect the building. On the date of the inspction, the officer visits the building, photographing and documenting the state of the building manually. The details of the inspection are then given to the building, who is required to share them with tenants, as well as being added to the public dataset. As such, there is not ethical concern with using this data, as it is already required to be public. 
+Inspections are conducted by the city each year. A list is made of all buildings requiring an evaluation, the building receives a notice, and a bylaw enforcement officer is assigned to inspect the building. On the date of the inspction, the officer visits the building, photographing and documenting the state of the building manually. The details of the inspection are then given to the building, who is required to share them with tenants, as well as being added to the public dataset. As such, there is not ethical concern with using this data, as it is already required to be public. 
 
 ## Cleaning
 As mentioned, we did not include information about the inspections themselves. For each building, we kept only the most recent inspection, and then dropped all columns related to the inspection. We kept the following columns:
@@ -60,8 +62,8 @@ As mentioned, we did not include information about the inspections themselves. F
 \end{itemize}
 Additionally, we only included buildings built between 1900 and 2020. We justify this decision in two ways: firstly, there are very few buildings built prior to 1900, and so their inclusion would not add to our analysis. Secondly, there appears to be a lag between the time when a building is constructed and its addition to the dataset. This is likely because the building must be registered in RentSafeTO, and then inspected at least once before it is added to the dataset. As such, we exclude buildings built after 2020, as the data appears to be incomplete. After cleaning, we are left with 3464 buildings in our dataset.
 
-# Results
-## Units Built
+# Results {#sec-results}
+## Gross Units Built
 ```{python}
 #| label: fig-total-units
 #| fig-cap: "Total Units by Year Built"
@@ -81,62 +83,13 @@ ax.set_title("Total Units by Year Built")
 plt.tight_layout()
 plt.show()
 ```
-Looking at the construction of apartment units in Toronto over time [@fig-total-units], we distinguish four distinct periods of construction:
-\begin{itemize}
-    \item 1900-1945: Pre-war slow development of small apartments in downtown Toronto
-    \item 1945-1979: Post-war boom in construction, characterized by urban sprawl and the construction of mid-sized apartment buildings
-    \item 1980-1999: Decline in construction, as the city begins to repeal housing policies that encouraged the post-war boom
-    \item 2000-2020: Modern period of construction, characterized by a shift towards high-rise apartment buildings in the downtown area, encouraged by new housing policies
-\end{itemize} 
 
-Studying the distribution of buildings constructed by year ([@fig-total-units]), we see a grim picture being painted: current levels of construction are far lower than they have been historically. Notably, we see a huge boom in construction in the post-war period, peaking in the 70s. This period of immense growth was fueled by favourable tax policies and incentives and rent control (@CCHR, @YorkRental). In the 80s and 90s, the federal government begins to repeal social housing policies, and in 1995, the city stops funding social housing altogether ([@CCHR, @SocialHousing]). This is reflected in the data, as we see a significant drop in construction in the 80s and 90s. Between 1995 and 2005, we see levels of construction that are lower than anything since 1950. However, we see a modest but persistent increase in construction since 2000, seemingly stimulated by new policies and incentives by the city of Toronto. Indeed, in 2010 the city released the Housing Opportunities Toronto plan [@HOT], which aimed to create and repair affordable rental homes, and is extending this program to 2020-2030 under the name HousingTO [@HousingTO].
+Studying the distribution of buildings constructed by year ([@fig-total-units]), we notice four distinct periods of construction. In the early 1900s (1900-1945), we see minimal construction. Then, following World War II, we see a huge boom, peaking in the 70s. From the 80s to the early 2000s, we see a significant decline in construction, with construction between 1995 and 2005 being lower than anything since 1950. Finally, we see a modest but persistent increase in construction since the 2000s.
 
-While the increase in construction since 2000 is promising, it is not nearly enough to match the population growth of the city. The population growth rate of Toronto has consistently been higher than the national average, and it now has over 7 million people [@Toronto7Mil]. Why has the city not been able to keep up with housing demand, as it once did in the 50s? To begin to answer this question, we examined the types and locations of new apartment buildings being constructed today.
+This data seems to paint a grim picture: current levels of construction are far lower than they have been historically. While the increase in construction since 2000 is promising, it is not nearly enough to match the population growth of the city. The population growth rate of Toronto has consistently been higher than the national average, and it now has over 7 million people [@Toronto7Mil]. Why has the city not been able to scale up apartment construction, as it did in the 50s? To answer this question, we examined the types and locations of new apartment buildings being constructed today.
 
-## A Shift in Building Types
-```{python}
-#| label: fig-avg-storeys
-#| fig-cap: "Average Number of Stories per Building by Year Built"
-#| echo: false
 
-bin_edges = np.linspace(df["year_built"].min(), df["year_built"].max(), 26)
-bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
-df["year_bin"] = pd.cut(df["year_built"], bins=bin_edges, labels=bin_centers, include_lowest=True)
-df_avg_binned = df.groupby("year_bin", observed=True)["storeys"].mean()
-
-fig, ax = plt.subplots(figsize=(6, 3))
-ax.bar(df_avg_binned.index.astype(float), df_avg_binned.values,
-       width=(bin_edges[1] - bin_edges[0]) * 0.9, color="steelblue", edgecolor="white")
-ax.set_xlabel("Year Built")
-ax.set_ylabel("Avg Storeys")
-ax.set_title("Average Number of Stories per Building by Year Built")
-plt.tight_layout()
-plt.show()
-```
-```{python}
-#| label: fig-avg-units
-#| fig-cap: "Average Number of Units per Building by Year Built"
-#| echo: false
-bin_edges = np.linspace(df["year_built"].min(), df["year_built"].max(), 26)
-bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
-df["year_bin"] = pd.cut(df["year_built"], bins=bin_edges, labels=bin_centers, include_lowest=True)
-df_avg_binned = df.groupby("year_bin", observed=True)["units"].mean()
-
-fig, ax = plt.subplots(figsize=(6, 3))
-ax.bar(df_avg_binned.index.astype(float), df_avg_binned.values,
-       width=(bin_edges[1] - bin_edges[0]) * 0.9, color="steelblue", edgecolor="white")
-ax.set_xlabel("Year Built")
-ax.set_ylabel("Avg Units")
-ax.set_title("Average Number of Units per Building by Year Built")
-plt.tight_layout()
-plt.show()
-```
-Plotting the average number of storeys in new buildings, we see that in the modern period there is a trend towards taller buildings with more units ([@fig-avg-storeys, @fig-avg-units]). This indicates a shift from horizontal expansion to vertical expansion, a trend that is echoed in the urban cycle of many cities globally [@Zambon2019]. When stratifying the data by construction era, we see a clear story of urban sprawl [@fig-eras]. In the pre-war we see a concentration of small apartments in the downtown, followed by an explosion of mid-sized apartments in the post-war period, stretching out into the suburbs. We then see a declining suburban construction in the end of the century, and finally a modern focus on a small number of large high-rise apartments, which are somewhat sprinkled across the city, but mainly focused in the downtown. The shift towards vertical expansion is likely due to an increasing scarcity of land in the city after the urban sprawl of the post-war boom. Vertical expansion allows more the city to house more people in the same land footprint.
-
-@fig-eras goes a long way in explaining why the city of Toronto has not been able to build at the rate of the post-war boom: horizontal expansion is not as viable as it was in the 50s, as available land becomes increasingly scarce. The city is now forced to build vertically, a more lengthy and expensive process. [Feedback from Prof Heath: add section on demolition laws, lots of low density land in Toronto that could potentially be torn down and replaced by higher density buildings, but the city has very strict demolition laws that make this difficult. Demolition laws are a major bottleneck in construction]
-
-(Story becomes: sprawl horizontally until out of land (subfigure b), then shifts to a more density-adverse period marked by a collapse in construction (subfigure c), and now a new period of growing vertical expansion (subfigure d).)
-
+## Four Eras of Construction
 ```{python}
 #| include: false
 def to_web_mercator(subset):
@@ -207,10 +160,57 @@ plot_era(to_web_mercator(modernDf), "Modern", "#4dac26", legend=True)
 plt.show()
 ```
 
-# Conclusion
-It would appear that the city of Toronto is nearing the limits of its growth, as seen by the housing crisis and the inability to address it. So, while the mild success of modern policies is promising, it is not likely that this will be sufficient to meet demand. The city, as well as the province and federal government, will need to consider other mechanisms to address the issue, as post-war level construction of housing in Toronto is not viable.
+Examining the location and size of construction, and stratifying by construction era, a clearer story emerges ([@fig-eras]), and it is one of urban sprawl. Starting off in the Pre-War era, we see construction of small apartments focused in the downtown. In the Post-War boom, we see a huge explosion of mid-sized apartments, stretching out into the suburbs. This massive growth was made possible by the availability of greenfield around the city, which allowed for horizontal expansion. Then, in the End of Century period, we see the decline in construction we noticed in [@fig-total-units]. Finally, in the Contemporary period, we see a focus on the construction of a small number of large apartments, generally focused in the downtown.
 
-As @Cuberes2011 notes, "(...) early on in the process of urbanization, the largest cities grow fastest. As time passes, population growth in the larger cities declines and the fastest growth can be found in smaller cities farther down in the urban hierarchy" [@Cuberes2011]. Future research should compare the growth of smaller satellite cities around Toronto (such as Mississauga, Scarborough, Hamilton...), as well as other cities in Ontario or Canada more broadly to see if they are picking up the slack. Additionally, future research can study the impact that the shift towards vertical expansion has on affordable housing and inequality, as it is likely that the newer high-rise apartments are more expensive than the smaller 20th century apartments.
+Plotting the average number of storeys in new buildings, we see that in the modern period there is a trend towards taller buildings with more units ([@fig-avg-storeys, @fig-avg-units]). This indicates a shift from horizontal expansion to vertical expansion, a trend that is echoed in the urban cycle of many cities globally [@Zambon2019]. We hypothesize that the decline of suburban construction and the shift towards vertical expansion is due to an increasing scarcity of greenfield around the city after the urban sprawl of the post-war boom. Vertical expansion allows more the city to house more people in the same land footprint.
+
+Hence, @fig-eras goes a long way in explaining why the city of Toronto has not been able to build at the rate of the post-war boom: horizontal expansion is not as viable as it was in the 50s, as available land becomes increasingly scarce. The city is now forced to build vertically, which brings with it many new issues.
+
+
+```{python}
+#| label: fig-avg-storeys
+#| fig-cap: "Average Number of Stories per Building by Year Built"
+#| echo: false
+
+bin_edges = np.linspace(df["year_built"].min(), df["year_built"].max(), 26)
+bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
+df["year_bin"] = pd.cut(df["year_built"], bins=bin_edges, labels=bin_centers, include_lowest=True)
+df_avg_binned = df.groupby("year_bin", observed=True)["storeys"].mean()
+
+fig, ax = plt.subplots(figsize=(6, 3))
+ax.bar(df_avg_binned.index.astype(float), df_avg_binned.values,
+       width=(bin_edges[1] - bin_edges[0]) * 0.9, color="steelblue", edgecolor="white")
+ax.set_xlabel("Year Built")
+ax.set_ylabel("Avg Storeys")
+ax.set_title("Average Number of Stories per Building by Year Built")
+plt.tight_layout()
+plt.show()
+```
+```{python}
+#| label: fig-avg-units
+#| fig-cap: "Average Number of Units per Building by Year Built"
+#| echo: false
+bin_edges = np.linspace(df["year_built"].min(), df["year_built"].max(), 26)
+bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
+df["year_bin"] = pd.cut(df["year_built"], bins=bin_edges, labels=bin_centers, include_lowest=True)
+df_avg_binned = df.groupby("year_bin", observed=True)["units"].mean()
+
+fig, ax = plt.subplots(figsize=(6, 3))
+ax.bar(df_avg_binned.index.astype(float), df_avg_binned.values,
+       width=(bin_edges[1] - bin_edges[0]) * 0.9, color="steelblue", edgecolor="white")
+ax.set_xlabel("Year Built")
+ax.set_ylabel("Avg Units")
+ax.set_title("Average Number of Units per Building by Year Built")
+plt.tight_layout()
+plt.show()
+```
+
+# Limitations and Conclusion {#sec-conclusion}
+As the city of Toronto nears the limits of its horizontal growth, it struggles to adapt to vertical expansion, as witnessed by the housing crisis and the city's inability to address it. Simply using the strategies that worked in the post-war boom will no longer be sufficient to solve the crisis, and the city  will need to consider other mechanisms to address the issue, such as reducing regulatory hurdles to construction. It appears that the city is beginning to make progress in this direction, as seen by the modest increase in housing since the 2000s, focused in vertical expansion in the downtown. However, whether this will be sufficient to meet increasing demand remains dubious. In 2022 and 2023, Toronto has the highest gross increase in population of any city in North America [@TMU2024], and the construction doesn't reflect this growth.
+
+This analysis is limited by several factors. Firstly, the dataset only includes buildings with three or more storeys, and 10 or more units. This excludes the construction of single-family homes, as well as small apartments, from our analysis. If there has been significant increase in their construction, our analysis may be overly pessimitic about modern construction. Finally, the dataset only included construction in Toronto, and not in the surrounding GTA and satellite cities, which have experienced significant growth.
+
+Hence, future research should compare the growth of smaller satellite cities around Toronto (such as Mississauga, Brampton, Vaughan...), as well as other cities in Ontario or Canada more broadly to see if they are picking up the slack. Future work can also explore the construction of smaller apartments and homes, to study any trends in their construction.
 
 \newpage 
  
